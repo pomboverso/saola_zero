@@ -29,45 +29,26 @@
 
         <LinearLayout style="@style/VerticalList">
 
-            <LinearLayout
-                android:id="@+id/themes_container"
-                style="@style/VerticalList">
-
-                <com.rama.okapi_zero.widgets.WdCollapsibleSection
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:defaultExpanded="true"
-                    app:header="@string/header_theme_dark"
-                    app:key="settings:section:theme_dark">
-
-                    <com.rama.okapi_zero.widgets.WdRadioGroup
-                        android:id="@+id/theme_dark_group"
-                        style="@style/VerticalList_BG2" />
-                </com.rama.okapi_zero.widgets.WdCollapsibleSection>
-
-                <View style="@style/SeparatorListVertical" />
-
-                <com.rama.okapi_zero.widgets.WdCollapsibleSection
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:defaultExpanded="true"
-                    app:header="@string/header_theme_light"
-                    app:key="settings:section:theme_light">
-
-                    <com.rama.okapi_zero.widgets.WdRadioGroup
-                        android:id="@+id/theme_light_group"
-                        style="@style/VerticalList_BG2" />
-                </com.rama.okapi_zero.widgets.WdCollapsibleSection>
-
-                <View style="@style/SeparatorListVertical" />
-            </LinearLayout>
-
             <com.rama.okapi_zero.widgets.WdCollapsibleSection
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:defaultExpanded="true"
                 app:header="@string/header_system"
                 app:key="settings:section:system">
+
+                <Button
+                    android:id="@+id/hid_setup_btn"
+                    style="@style/BTN"
+                    android:text="@string/btn_hid_setup" />
+
+                <TextView
+                    android:id="@+id/hid_setup_log"
+                    style="@style/Text"
+                    android:textIsSelectable="true"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
+
+                <View style="@style/SeparatorListVertical" />
 
                 <com.rama.okapi_zero.widgets.WdCheckbox
                     android:id="@+id/show_status_bar"
@@ -119,19 +100,47 @@
                     </LinearLayout>
                 </LinearLayout>
             </com.rama.okapi_zero.widgets.WdCollapsibleSection>
+
+            <View style="@style/SeparatorListVertical" />
+
+            <LinearLayout
+                android:id="@+id/themes_container"
+                style="@style/VerticalList">
+
+                <com.rama.okapi_zero.widgets.WdCollapsibleSection
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:defaultExpanded="true"
+                    app:header="@string/header_theme_dark"
+                    app:key="settings:section:theme_dark">
+
+                    <com.rama.okapi_zero.widgets.WdRadioGroup
+                        android:id="@+id/theme_dark_group"
+                        style="@style/VerticalList_BG2" />
+                </com.rama.okapi_zero.widgets.WdCollapsibleSection>
+
+                <View style="@style/SeparatorListVertical" />
+
+                <com.rama.okapi_zero.widgets.WdCollapsibleSection
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:defaultExpanded="true"
+                    app:header="@string/header_theme_light"
+                    app:key="settings:section:theme_light">
+
+                    <com.rama.okapi_zero.widgets.WdRadioGroup
+                        android:id="@+id/theme_light_group"
+                        style="@style/VerticalList_BG2" />
+                </com.rama.okapi_zero.widgets.WdCollapsibleSection>
+
+                <View style="@style/SeparatorListVertical" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
     <View style="@style/Separator" />
 
-    <Button
-        android:id="@+id/hid_test_button"
-        style="@style/BTN"
-        android:text="@string/btn_hid_test" />
-
-    <View style="@style/SeparatorListVertical" />
-
-    <Button
+<Button
         android:id="@+id/about_button"
         style="@style/BTN"
         android:text="@string/btn_about" />

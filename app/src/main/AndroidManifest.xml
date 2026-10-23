@@ -96,11 +96,7 @@
             android:name=".activities.About"
             android:exported="false" />
 
-        <activity
-            android:name=".activities.HidTest"
-            android:exported="false" />
-
-        <activity
+<activity
             android:name=".activities.Settings"
             android:exported="false" />
 

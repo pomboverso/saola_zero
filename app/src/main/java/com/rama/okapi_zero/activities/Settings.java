@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.rama.okapi_zero.R;
+import com.rama.okapi_zero.helpers.HidGadget;
 import com.rama.okapi_zero.helpers.SystemBars;
 import com.rama.okapi_zero.managers.FontManager;
 import com.rama.okapi_zero.managers.PrefsManager;
@@ -22,6 +24,7 @@ import java.util.List;
 public class Settings extends BaseActivity {
     private PrefsManager prefs;
     private View root;
+    private volatile boolean hidBusy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +38,23 @@ public class Settings extends BaseActivity {
         setupZoomSection();
         FontManager.apply(root, FontManager.getJersey25(this));
         ThemeManager.applyTheme(this, root);
-        findViewById(R.id.hid_test_button).setOnClickListener(v -> startActivity(new Intent(Settings.this, HidTest.class)));
         findViewById(R.id.about_button).setOnClickListener(v -> startActivity(new Intent(Settings.this, About.class)));
         findViewById(R.id.go_back).setOnClickListener(v -> finish());
+
+        findViewById(R.id.hid_setup_btn).setOnClickListener(v -> setupKeyboard());
+    }
+
+    private void setupKeyboard() {
+        if (hidBusy) return;
+        hidBusy = true;
+        final TextView log = findViewById(R.id.hid_setup_log);
+        log.setVisibility(View.VISIBLE);
+        log.setText(R.string.hid_setting_up);
+        new Thread(() -> {
+            final String out = HidGadget.setup();
+            runOnUiThread(() -> log.setText(out.length() == 0 ? getString(R.string.hid_done) : out));
+            hidBusy = false;
+        }).start();
     }
 
     private void setupThemes() {

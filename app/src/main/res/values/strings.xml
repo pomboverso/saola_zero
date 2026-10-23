@@ -46,15 +46,9 @@
     <string name="altdescr_move_up">Move up</string>
     <string name="altdescr_move_down">Move down</string>
 
-    <string name="header_hid_test">USB Keyboard Test</string>
-    <string name="btn_hid_test">HID TEST</string>
-    <string name="btn_hid_check">1. CHECK SUPPORT</string>
-    <string name="btn_hid_setup">2. SET UP KEYBOARD</string>
-    <string name="btn_hid_type">3. TYPE TEXT (5s DELAY)</string>
-    <string name="hid_default_text" translatable="false">Hello from Pixel 6! 123 @#$</string>
-    <string name="hid_typing_in">Typing in %1$d... click a text field on the computer</string>
+    <string name="btn_hid_setup">SET UP KEYBOARD</string>
     <string name="hid_done">Done.</string>
-    <string name="hid_unsupported">%1$d character(s) are not US-ASCII and will be skipped.</string>
+    <string name="hid_setting_up">Setting up...</string>
     <string name="altdescr_send_usb">Type this text on the computer over USB</string>
     <string name="toast_sent">Sent</string>
 </resources>
