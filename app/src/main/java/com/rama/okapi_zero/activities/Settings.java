@@ -20,6 +20,7 @@ import com.rama.okapi_zero.managers.FontManager;
 import com.rama.okapi_zero.managers.PrefsManager;
 import com.rama.okapi_zero.managers.ThemeManager;
 import com.rama.okapi_zero.managers.ZoomManager;
+import com.rama.okapi_zero.objects.PrefTheme;
 import com.rama.okapi_zero.objects.Themes;
 import com.rama.okapi_zero.widgets.WdCheckbox;
 import com.rama.okapi_zero.widgets.WdRadioGroup;
@@ -192,23 +193,25 @@ public class Settings extends BaseActivity {
             findViewById(R.id.themes_container).setVisibility(View.GONE);
             return;
         }
-        setupThemeGroup((WdRadioGroup) findViewById(R.id.theme_dark_group), Themes.dark(), prefs.getDarkTheme(), false);
-        setupThemeGroup((WdRadioGroup) findViewById(R.id.theme_light_group), Themes.light(), prefs.getLightTheme(), true);
-    }
-
-    private void setupThemeGroup(WdRadioGroup group, final List<Themes.Palette> palettes, String current, final boolean light) {
-        int checkedId = -1;
+        final WdRadioGroup group = findViewById(R.id.theme_group);
+        final List<Themes.Palette> palettes = Themes.all();
+        String current = prefs.getTheme();
+        boolean random = PrefTheme.CATPPUCCIN_MOCHA_RANDOM.equals(current);
+        // Index 0 is always "Random"; palettes follow in order.
+        int checkedId = group.addOption(getString(R.string.label_theme_random)).getId();
+        if (!random) checkedId = -1;
         for (int i = 0; i < palettes.size(); i++) {
             int id = group.addOption(palettes.get(i).label).getId();
             if (palettes.get(i).id.equals(current)) checkedId = id;
         }
         group.check(checkedId);
         group.setOnCheckedChangeListener((g, id) -> {
-            String themeId = palettes.get(g.getCheckedIndex()).id;
-            if (light) {
-                prefs.setLightTheme(themeId);
+            int index = g.getCheckedIndex();
+            if (index == 0) {
+                prefs.setTheme(PrefTheme.CATPPUCCIN_MOCHA_RANDOM);
+                ThemeManager.roll(Settings.this);
             } else {
-                prefs.setDarkTheme(themeId);
+                prefs.setTheme(palettes.get(index - 1).id);
             }
             ThemeManager.applyTheme(Settings.this, root);
         });
@@ -217,7 +220,6 @@ public class Settings extends BaseActivity {
     private void setupSystemSection() {
         bindCheckbox(R.id.show_status_bar, PrefsManager.KEY_STATUS_BAR, prefs.isStatusBarVisible());
         bindCheckbox(R.id.keep_screen_awake, PrefsManager.KEY_KEEP_AWAKE, prefs.isKeepScreenAwake());
-        bindCheckbox(R.id.quick_erase, PrefsManager.KEY_QUICK_ERASE, prefs.isQuickEraseEnabled());
     }
 
     private void bindCheckbox(int id, final String key, boolean value) {

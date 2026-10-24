@@ -14,6 +14,7 @@ public final class PrefTheme {
     public static final String MONO_DARK = "mono_dark";
     public static final String MONO_LIGHT = "mono_light";
 
-    public static final String DEFAULT_DARK = CATPPUCCIN_MOCHA_PEACH;
-    public static final String DEFAULT_LIGHT = CATPPUCCIN_LATTE;
+    public static final String CATPPUCCIN_MOCHA_RANDOM = "catppuccin_mocha_random";
+
+    public static final String DEFAULT_THEME = CATPPUCCIN_MOCHA_RANDOM;
 }

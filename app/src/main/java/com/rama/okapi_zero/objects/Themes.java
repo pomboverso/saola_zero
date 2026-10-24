@@ -92,7 +92,7 @@ public final class Themes {
         return list;
     }
 
-    public static List<Palette> dark() {
+    public static List<Palette> rotationPool() {
         List<Palette> list = new ArrayList<Palette>();
         list.add(CATPPUCCIN_MOCHA_MAUVE);
         list.add(CATPPUCCIN_MOCHA_BLUE);
@@ -100,14 +100,6 @@ public final class Themes {
         list.add(CATPPUCCIN_MOCHA_PEACH);
         list.add(CATPPUCCIN_MOCHA_GREEN);
         list.add(CATPPUCCIN_MOCHA_RED);
-        list.add(MONO_DARK);
-        return list;
-    }
-
-    public static List<Palette> light() {
-        List<Palette> list = new ArrayList<Palette>();
-        list.add(CATPPUCCIN_LATTE);
-        list.add(MONO_LIGHT);
         return list;
     }
 

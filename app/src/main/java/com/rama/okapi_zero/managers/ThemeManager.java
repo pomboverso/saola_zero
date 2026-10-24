@@ -17,13 +17,17 @@ import android.widget.TextView;
 
 import com.rama.okapi_zero.R;
 import com.rama.okapi_zero.helpers.SystemBars;
+import com.rama.okapi_zero.objects.PrefTheme;
 import com.rama.okapi_zero.objects.Themes;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public final class ThemeManager {
+    private static final Random RANDOM = new Random();
+
     private ThemeManager() {
     }
 
@@ -32,7 +36,35 @@ public final class ThemeManager {
     }
 
     public static Themes.Palette currentPalette(Context context) {
-        return paletteFor(PrefsManager.getInstance(context).getActiveTheme());
+        PrefsManager prefs = PrefsManager.getInstance(context);
+        String id = prefs.getTheme();
+        if (PrefTheme.CATPPUCCIN_MOCHA_RANDOM.equals(id)) {
+            id = prefs.getRolledThemeId();
+            if (id.length() == 0) {
+                roll(context);
+                id = prefs.getRolledThemeId();
+            }
+        }
+        return paletteFor(id);
+    }
+
+    /** Picks a new variant, but only if the Random theme is selected. Call once per app launch. */
+    public static void rollIfRandom(Context context) {
+        if (PrefTheme.CATPPUCCIN_MOCHA_RANDOM.equals(PrefsManager.getInstance(context).getTheme())) {
+            roll(context);
+        }
+    }
+
+    /** Picks a random Catppuccin dark variant, different from the previous one. */
+    public static void roll(Context context) {
+        PrefsManager prefs = PrefsManager.getInstance(context);
+        List<Themes.Palette> pool = Themes.rotationPool();
+        String previous = prefs.getRolledThemeId();
+        String next;
+        do {
+            next = pool.get(RANDOM.nextInt(pool.size())).id;
+        } while (next.equals(previous) && pool.size() > 1);
+        prefs.setRolledTheme(next);
     }
 
     public static void applyTheme(Context context, View root) {

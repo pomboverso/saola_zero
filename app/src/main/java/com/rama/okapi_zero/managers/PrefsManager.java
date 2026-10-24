@@ -7,13 +7,11 @@ import com.rama.okapi_zero.objects.PrefTheme;
 
 public class PrefsManager {
     private static final String PREFS_NAME = "okapi";
-    private static final String KEY_THEME_DARK = "settings:theme_dark";
-    private static final String KEY_THEME_LIGHT = "settings:theme_light";
-    private static final String KEY_LIGHT_MODE = "settings:light_mode";
+    private static final String KEY_THEME = "settings:theme";
+    private static final String KEY_ROLLED_THEME = "settings:rolled_theme";
     private static final String KEY_ZOOM_PERCENT = "settings:zoom_percent";
     public static final String KEY_STATUS_BAR = "settings:show_status_bar";
     public static final String KEY_KEEP_AWAKE = "settings:keep_screen_awake";
-    public static final String KEY_QUICK_ERASE = "settings:quick_erase";
     private static PrefsManager instance;
     private final SharedPreferences prefs;
 
@@ -28,32 +26,21 @@ public class PrefsManager {
         return instance;
     }
 
-    public String getDarkTheme() {
-        return prefs.getString(KEY_THEME_DARK, PrefTheme.DEFAULT_DARK);
+    public String getTheme() {
+        return prefs.getString(KEY_THEME, PrefTheme.DEFAULT_THEME);
     }
 
-    public void setDarkTheme(String themeId) {
-        prefs.edit().putString(KEY_THEME_DARK, themeId).commit();
+    public void setTheme(String themeId) {
+        prefs.edit().putString(KEY_THEME, themeId).commit();
     }
 
-    public String getLightTheme() {
-        return prefs.getString(KEY_THEME_LIGHT, PrefTheme.DEFAULT_LIGHT);
+    /** The palette id the Random theme last picked, or "" if it never rolled. */
+    public String getRolledThemeId() {
+        return prefs.getString(KEY_ROLLED_THEME, "");
     }
 
-    public void setLightTheme(String themeId) {
-        prefs.edit().putString(KEY_THEME_LIGHT, themeId).commit();
-    }
-
-    public boolean isLightMode() {
-        return getBoolean(KEY_LIGHT_MODE, false);
-    }
-
-    public void setLightMode(boolean value) {
-        setBoolean(KEY_LIGHT_MODE, value);
-    }
-
-    public String getActiveTheme() {
-        return isLightMode() ? getLightTheme() : getDarkTheme();
+    public void setRolledTheme(String themeId) {
+        prefs.edit().putString(KEY_ROLLED_THEME, themeId).commit();
     }
 
     public int getZoomPercent() {
@@ -70,10 +57,6 @@ public class PrefsManager {
 
     public boolean isKeepScreenAwake() {
         return getBoolean(KEY_KEEP_AWAKE, true);
-    }
-
-    public boolean isQuickEraseEnabled() {
-        return getBoolean(KEY_QUICK_ERASE, false);
     }
 
     public boolean getBoolean(String key, boolean defaultValue) {

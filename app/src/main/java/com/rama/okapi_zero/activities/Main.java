@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -40,7 +39,6 @@ public class Main extends BaseActivity implements EntryAdapter.Listener {
     private View deleteBtn;
     private View sortBtn;
     private View emptyLabel;
-    private ImageView themeIcon;
     private ListView entriesList;
     private EditText fieldName;
     private EditText fieldUser;
@@ -76,15 +74,6 @@ public class Main extends BaseActivity implements EntryAdapter.Listener {
         fieldUrl = findViewById(R.id.field_url);
         fieldTotp = findViewById(R.id.field_totp);
 
-//        View themeBtn = findViewById(R.id.theme_btn);
-//        if (Build.VERSION.SDK_INT < 11) {
-//            themeBtn.setVisibility(View.GONE);
-//        }
-//        themeBtn.setOnClickListener(v -> {
-//            prefs.setLightMode(!prefs.isLightMode());
-//            applyTheme();
-//            refreshList();
-//        });
         sortBtn.setOnClickListener(v -> {
             sortMode = !sortMode;
             refreshList();
@@ -107,6 +96,7 @@ public class Main extends BaseActivity implements EntryAdapter.Listener {
         } else {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
+        ThemeManager.rollIfRandom(this);
         FontManager.apply(root, FontManager.getJersey25(this));
         applyTheme();
         if (mode == MODE_LIST) {
@@ -258,7 +248,6 @@ public class Main extends BaseActivity implements EntryAdapter.Listener {
 
     private void applyTheme() {
         ThemeManager.applyTheme(this, root);
-        themeIcon.setImageResource(prefs.isLightMode() ? R.drawable.px_moon : R.drawable.px_sun);
     }
 
     private void hideKeyboard() {
