@@ -36,7 +36,7 @@ public class Main extends BaseActivity implements EntryAdapter.Listener {
     private View root;
     private View listView;
     private View editView;
-    private View deleteBtn;
+//    private View deleteBtn;
     private View sortBtn;
     private View emptyLabel;
     private ListView entriesList;
@@ -63,7 +63,7 @@ public class Main extends BaseActivity implements EntryAdapter.Listener {
 
         listView = findViewById(R.id.list_view);
         editView = findViewById(R.id.edit_view);
-        deleteBtn = findViewById(R.id.delete_btn);
+//        deleteBtn = findViewById(R.id.delete_btn);
         sortBtn = findViewById(R.id.sort_btn);
         emptyLabel = findViewById(R.id.empty_label);
 //        themeIcon = findViewById(R.id.theme_icon);
@@ -82,7 +82,7 @@ public class Main extends BaseActivity implements EntryAdapter.Listener {
         findViewById(R.id.add_btn).setOnClickListener(v -> openEdit(null));
         findViewById(R.id.save_btn).setOnClickListener(v -> save());
         findViewById(R.id.cancel).setOnClickListener(v -> showList());
-        deleteBtn.setOnClickListener(v -> deleteCurrent());
+//        deleteBtn.setOnClickListener(v -> deleteCurrent());
 
         BackHelper.register(this, this::handleBack);
         showList();
@@ -128,7 +128,7 @@ public class Main extends BaseActivity implements EntryAdapter.Listener {
         editing = null;
         listView.setVisibility(View.VISIBLE);
         editView.setVisibility(View.GONE);
-        deleteBtn.setVisibility(View.GONE);
+//        deleteBtn.setVisibility(View.GONE);
         sortBtn.setVisibility(View.VISIBLE);
         hideKeyboard();
         refreshList();
@@ -145,7 +145,7 @@ public class Main extends BaseActivity implements EntryAdapter.Listener {
         mode = MODE_EDIT;
         listView.setVisibility(View.GONE);
         editView.setVisibility(View.VISIBLE);
-        deleteBtn.setVisibility(entry == null ? View.GONE : View.VISIBLE);
+//        deleteBtn.setVisibility(entry == null ? View.GONE : View.VISIBLE);
         sortBtn.setVisibility(View.GONE);
         if (entry == null) {
             fieldName.requestFocus();

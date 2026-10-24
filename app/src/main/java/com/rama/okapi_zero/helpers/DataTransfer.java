@@ -2,55 +2,134 @@ package com.rama.okapi_zero.helpers;
 
 import com.rama.okapi_zero.objects.Entry;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
-/** Import/export format: one JSON document, plain text. */
+/**
+ * Import/export as CSV (RFC 4180), plain text.
+ *
+ * Export columns: Title, Username, Password, URL, TOTP.
+ * Import finds columns by header name, so files from KeePassXC (Title, Username, Password, URL, TOTP),
+ * Bitwarden (name, login_username, login_password, login_uri, login_totp), Chrome (name, url, username, password),
+ * LastPass and 1Password style exports work. Columns that Okapi has no field for (notes, group...) are ignored.
+ */
 public final class DataTransfer {
     private DataTransfer() {
     }
 
-    public static final String FILE_NAME = "okapi_export.json";
-    private static final int VERSION = 1;
+    public static final String FILE_NAME = "okapi_export.csv";
+    private static final String[] HEADER = {"Title", "Username", "Password", "URL", "TOTP"};
 
-    public static String toJson(List<Entry> entries) throws JSONException {
-        JSONArray array = new JSONArray();
+    private static final List<String> NAME_COLUMNS = Arrays.asList("title", "name");
+    private static final List<String> USER_COLUMNS = Arrays.asList("username", "login_username", "user", "login", "user name");
+    private static final List<String> PASSWORD_COLUMNS = Arrays.asList("password", "login_password", "pass");
+    private static final List<String> URL_COLUMNS = Arrays.asList("url", "login_uri", "website", "web site", "uri");
+    private static final List<String> TOTP_COLUMNS = Arrays.asList("totp", "login_totp", "otpauth", "otp", "one-time password");
+
+    public static String toCsv(List<Entry> entries) {
+        StringBuilder sb = new StringBuilder();
+        appendRow(sb, HEADER);
         for (Entry e : entries) {
-            JSONObject o = new JSONObject();
-            o.put("name", e.name);
-            o.put("user", e.user);
-            o.put("password", e.password);
-            o.put("url", e.url);
-            o.put("totp", e.totp);
-            o.put("updatedAt", e.updatedAt);
-            array.put(o);
+            appendRow(sb, new String[]{e.name, e.user, e.password, e.url, e.totp});
         }
-        JSONObject root = new JSONObject();
-        root.put("app", "okapi");
-        root.put("version", VERSION);
-        root.put("entries", array);
-        return root.toString(2);
+        return sb.toString();
     }
 
-    public static List<Entry> fromJson(String json) throws JSONException {
-        JSONObject root = new JSONObject(json);
-        JSONArray array = root.getJSONArray("entries");
+    private static void appendRow(StringBuilder sb, String[] fields) {
+        for (int i = 0; i < fields.length; i++) {
+            if (i > 0) sb.append(',');
+            sb.append('"').append(fields[i].replace("\"", "\"\"")).append('"');
+        }
+        sb.append("\r\n");
+    }
+
+    /** Throws IllegalArgumentException if the file has no recognizable header. */
+    public static List<Entry> fromCsv(String csv) {
+        List<List<String>> rows = parse(csv);
+        if (rows.isEmpty()) throw new IllegalArgumentException("The file is empty");
+        List<String> header = rows.get(0);
+        int name = find(header, NAME_COLUMNS);
+        int user = find(header, USER_COLUMNS);
+        int password = find(header, PASSWORD_COLUMNS);
+        int url = find(header, URL_COLUMNS);
+        int totp = find(header, TOTP_COLUMNS);
+        if (name < 0 && user < 0 && password < 0 && url < 0 && totp < 0) {
+            throw new IllegalArgumentException("No Title, Username, Password, URL or TOTP column found in the first row");
+        }
         List<Entry> entries = new ArrayList<Entry>();
-        for (int i = 0; i < array.length(); i++) {
-            JSONObject o = array.getJSONObject(i);
-            Entry e = new Entry(0, o.optString("name", ""), o.optString("user", ""), o.optString("password", ""),
-                    o.optString("url", ""), o.optString("totp", ""), o.optLong("updatedAt", 0), 0);
+        for (int r = 1; r < rows.size(); r++) {
+            List<String> row = rows.get(r);
+            Entry e = new Entry(0, cell(row, name).trim(), cell(row, user).trim(), cell(row, password),
+                    cell(row, url).trim(), cell(row, totp).trim(), 0, 0);
             if (e.name.length() + e.user.length() + e.password.length() + e.url.length() + e.totp.length() == 0) continue;
             entries.add(e);
         }
         return entries;
+    }
+
+    private static int find(List<String> header, List<String> aliases) {
+        for (int i = 0; i < header.size(); i++) {
+            if (aliases.contains(header.get(i).trim().toLowerCase(Locale.ROOT))) return i;
+        }
+        return -1;
+    }
+
+    private static String cell(List<String> row, int index) {
+        return index >= 0 && index < row.size() ? row.get(index) : "";
+    }
+
+    /** RFC 4180: quoted fields may contain commas, doubled quotes and line breaks. Handles CRLF, LF and a UTF-8 BOM. */
+    static List<List<String>> parse(String text) {
+        List<List<String>> rows = new ArrayList<List<String>>();
+        if (text.length() > 0 && text.charAt(0) == '﻿') text = text.substring(1);
+        List<String> row = new ArrayList<String>();
+        StringBuilder field = new StringBuilder();
+        boolean inQuotes = false;
+        boolean fieldStarted = false;
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (inQuotes) {
+                if (c == '"') {
+                    if (i + 1 < text.length() && text.charAt(i + 1) == '"') {
+                        field.append('"');
+                        i++;
+                    } else {
+                        inQuotes = false;
+                    }
+                } else {
+                    field.append(c);
+                }
+            } else if (c == '"') {
+                inQuotes = true;
+                fieldStarted = true;
+            } else if (c == ',') {
+                row.add(field.toString());
+                field.setLength(0);
+                fieldStarted = true;
+            } else if (c == '\r' || c == '\n') {
+                if (c == '\r' && i + 1 < text.length() && text.charAt(i + 1) == '\n') i++;
+                if (fieldStarted || field.length() > 0 || row.size() > 0) {
+                    row.add(field.toString());
+                    rows.add(row);
+                }
+                row = new ArrayList<String>();
+                field.setLength(0);
+                fieldStarted = false;
+            } else {
+                field.append(c);
+                fieldStarted = true;
+            }
+        }
+        if (fieldStarted || field.length() > 0 || row.size() > 0) {
+            row.add(field.toString());
+            rows.add(row);
+        }
+        return rows;
     }
 
     public static String readAll(InputStream in) throws IOException {

@@ -10,18 +10,42 @@
         style="@style/HorizontalList"
         android:padding="4sp">
 
-<!--        <FrameLayout-->
-<!--            android:id="@+id/theme_btn"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:padding="@dimen/small">-->
+        <LinearLayout
+            style="@style/HorizontalList"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:background="@color/surface_0">
 
-<!--            <ImageView-->
-<!--                android:id="@+id/theme_icon"-->
-<!--                style="@style/Icon24"-->
-<!--                android:contentDescription="@string/altdescr_switch_theme"-->
-<!--                android:src="@drawable/px_sun" />-->
-<!--        </FrameLayout>-->
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+
+                <ImageView
+                    style="@style/Icon24"
+                    android:src="@drawable/px_search" />
+            </FrameLayout>
+
+            <EditText
+                android:id="@+id/search"
+                style="@style/EditText"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:background="@color/surface_0"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp" />
+
+            <FrameLayout
+                android:id="@+id/clear_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+
+                <ImageView
+                    style="@style/Icon24"
+                    android:src="@drawable/px_times" />
+            </FrameLayout>
+        </LinearLayout>
 
         <FrameLayout
             android:id="@+id/sort_btn"
@@ -34,11 +58,6 @@
                 android:contentDescription="@string/altdescr_sort"
                 android:src="@drawable/px_sort" />
         </FrameLayout>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
 
         <FrameLayout
             android:id="@+id/settings_btn"
@@ -197,10 +216,15 @@
 
         <View style="@style/SeparatorListVertical" />
 
+        <!--        <Button-->
+        <!--            android:id="@+id/delete_btn"-->
+        <!--            style="@style/BTN_Danger"-->
+        <!--            android:text="@string/btn_delete" />-->
+
         <Button
-            android:id="@+id/delete_btn"
+            android:id="@+id/archive_btn"
             style="@style/BTN_Danger"
-            android:text="@string/btn_delete" />
+            android:text="@string/btn_archive" />
 
         <View style="@style/SeparatorListVertical" />
 

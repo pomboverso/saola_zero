@@ -72,7 +72,7 @@ public class Settings extends BaseActivity {
     private void startExport() {
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT)
                 .addCategory(Intent.CATEGORY_OPENABLE)
-                .setType("application/json")
+                .setType("text/csv")
                 .putExtra(Intent.EXTRA_TITLE, DataTransfer.FILE_NAME);
         try {
             startActivityForResult(intent, REQ_EXPORT);
@@ -108,7 +108,7 @@ public class Settings extends BaseActivity {
             EntriesManager db = new EntriesManager(this);
             try {
                 List<Entry> entries = db.getAll();
-                byte[] bytes = DataTransfer.toJson(entries).getBytes("UTF-8");
+                byte[] bytes = DataTransfer.toCsv(entries).getBytes("UTF-8");
                 OutputStream out = null;
                 File file = null;
                 if (uri != null) {
@@ -150,13 +150,13 @@ public class Settings extends BaseActivity {
                     }
                     in = new FileInputStream(file);
                 }
-                String json;
+                String csv;
                 try {
-                    json = DataTransfer.readAll(in);
+                    csv = DataTransfer.readAll(in);
                 } finally {
                     in.close();
                 }
-                List<Entry> entries = DataTransfer.fromJson(json);
+                List<Entry> entries = DataTransfer.fromCsv(csv);
                 int added = db.importEntries(entries);
                 message = getString(R.string.data_imported, added, entries.size() - added);
             } catch (Exception e) {
