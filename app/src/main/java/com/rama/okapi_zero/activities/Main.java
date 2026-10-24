@@ -1,7 +1,6 @@
 package com.rama.okapi_zero.activities;
 
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -25,7 +24,6 @@ import com.rama.okapi_zero.managers.FontManager;
 import com.rama.okapi_zero.managers.PrefsManager;
 import com.rama.okapi_zero.managers.ThemeManager;
 import com.rama.okapi_zero.objects.Entry;
-import com.rama.okapi_zero.objects.Themes;
 
 import java.util.List;
 
@@ -70,7 +68,7 @@ public class Main extends BaseActivity implements EntryAdapter.Listener {
         deleteBtn = findViewById(R.id.delete_btn);
         sortBtn = findViewById(R.id.sort_btn);
         emptyLabel = findViewById(R.id.empty_label);
-        themeIcon = findViewById(R.id.theme_icon);
+//        themeIcon = findViewById(R.id.theme_icon);
         entriesList = findViewById(R.id.messages_list);
         fieldName = findViewById(R.id.field_name);
         fieldUser = findViewById(R.id.field_user);
@@ -78,15 +76,15 @@ public class Main extends BaseActivity implements EntryAdapter.Listener {
         fieldUrl = findViewById(R.id.field_url);
         fieldTotp = findViewById(R.id.field_totp);
 
-        View themeBtn = findViewById(R.id.theme_btn);
-        if (Build.VERSION.SDK_INT < 11) {
-            themeBtn.setVisibility(View.GONE);
-        }
-        themeBtn.setOnClickListener(v -> {
-            prefs.setLightMode(!prefs.isLightMode());
-            applyTheme();
-            refreshList();
-        });
+//        View themeBtn = findViewById(R.id.theme_btn);
+//        if (Build.VERSION.SDK_INT < 11) {
+//            themeBtn.setVisibility(View.GONE);
+//        }
+//        themeBtn.setOnClickListener(v -> {
+//            prefs.setLightMode(!prefs.isLightMode());
+//            applyTheme();
+//            refreshList();
+//        });
         sortBtn.setOnClickListener(v -> {
             sortMode = !sortMode;
             refreshList();
@@ -260,9 +258,6 @@ public class Main extends BaseActivity implements EntryAdapter.Listener {
 
     private void applyTheme() {
         ThemeManager.applyTheme(this, root);
-        Themes.Palette palette = ThemeManager.currentPalette(this);
-        entriesList.setDivider(new ColorDrawable(palette.border));
-        entriesList.setDividerHeight(1);
         themeIcon.setImageResource(prefs.isLightMode() ? R.drawable.px_moon : R.drawable.px_sun);
     }
 

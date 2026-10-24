@@ -43,9 +43,11 @@
             android:id="@+id/row_text"
             style="@style/Text"
             android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/base"
             android:ellipsize="end"
+            android:gravity="center_vertical"
             android:padding="@dimen/space_between_elements"
             android:singleLine="true" />
 
@@ -55,6 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@color/base"
+            android:gravity="center"
             android:padding="@dimen/space_between_elements"
             android:textColor="@color/disabled"
             android:textSize="@dimen/small" />
@@ -116,4 +119,6 @@
             android:layout_weight="1"
             android:text="E" />
     </LinearLayout>
+
+    <View style="@style/SeparatorListVertical" />
 </LinearLayout>

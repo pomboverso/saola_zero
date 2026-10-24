@@ -112,14 +112,14 @@
 
                 <Button
                     android:id="@+id/export_btn"
-                    style="@style/BTN"
+                    style="@style/BTN_Danger"
                     android:text="@string/btn_export" />
 
                 <View style="@style/SeparatorListVertical" />
 
                 <Button
                     android:id="@+id/import_btn"
-                    style="@style/BTN"
+                    style="@style/BTN_Danger"
                     android:text="@string/btn_import" />
 
                 <View style="@style/SeparatorListVertical" />

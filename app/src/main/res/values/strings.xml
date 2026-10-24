@@ -53,11 +53,12 @@
     <string name="toast_sent">Sent</string>
 
     <string name="btn_save">SAVE</string>
-    <string name="label_name">NAME</string>
-    <string name="label_user">USER</string>
-    <string name="label_password">PASSWORD</string>
+    <string name="btn_delete">DELETE</string>
+    <string name="label_name">Name</string>
+    <string name="label_user">User</string>
+    <string name="label_password">Password</string>
     <string name="label_url">URL</string>
-    <string name="label_totp">TOTP SECRET</string>
+    <string name="label_totp">TOTP Secret</string>
     <string name="toast_nothing_to_save">Nothing to save</string>
     <string name="toast_invalid_totp">Invalid TOTP secret</string>
     <string name="toast_confirm_delete">Tap delete again to confirm</string>

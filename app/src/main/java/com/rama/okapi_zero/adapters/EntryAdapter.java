@@ -37,6 +37,8 @@ public class EntryAdapter extends BaseAdapter {
         void onEdit(Entry entry);
     }
 
+    private static final int[] ACTION_IDS = {R.id.row_user, R.id.row_password, R.id.row_totp, R.id.row_url, R.id.row_edit};
+
     private final Context context;
     private final List<Entry> entries;
     private final boolean sortMode;
@@ -94,13 +96,18 @@ public class EntryAdapter extends BaseAdapter {
         FontManager.apply(view, FontManager.getJersey25(context));
         ThemeManager.applyToTree(context, view);
         ZoomManager.apply(context, view);
+        // Only the background signals enabled/disabled; the text color comes from the style.
+        // Set after theming so it wins, and always set so recycled rows get reset.
+        for (int id : ACTION_IDS) {
+            Button button = view.findViewById(id);
+            button.setBackgroundColor(button.isEnabled() ? palette.accent : palette.disabled);
+        }
         return view;
     }
 
     private void bindAction(View row, int id, boolean enabled, final Runnable action) {
         Button button = row.findViewById(id);
         button.setEnabled(enabled);
-        button.setTag(enabled ? "accent" : "disabled");
         button.setOnClickListener(v -> action.run());
     }
 

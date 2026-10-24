@@ -64,9 +64,13 @@
         <item name="android:background">@color/accent</item>
     </style>
 
-    <style name="BTN_Small" parent="BTN">
-        <item name="android:textColor">@color/accent</item>
-        <item name="android:background">@color/surface_1</item>
+    <style name="BTN_Danger" parent="BTN">
+        <item name="android:background">@color/error</item>
+    </style>
+
+    <style name="BTN_Small" parent="BlockFlow">
+        <item name="android:textColor">@color/surface_0</item>
+        <item name="android:background">@color/accent</item>
         <item name="android:padding">8dp</item>
         <item name="android:textSize">@dimen/small</item>
     </style>

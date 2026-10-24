@@ -10,18 +10,18 @@
         style="@style/HorizontalList"
         android:padding="4sp">
 
-        <FrameLayout
-            android:id="@+id/theme_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/small">
+<!--        <FrameLayout-->
+<!--            android:id="@+id/theme_btn"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:padding="@dimen/small">-->
 
-            <ImageView
-                android:id="@+id/theme_icon"
-                style="@style/Icon24"
-                android:contentDescription="@string/altdescr_switch_theme"
-                android:src="@drawable/px_sun" />
-        </FrameLayout>
+<!--            <ImageView-->
+<!--                android:id="@+id/theme_icon"-->
+<!--                style="@style/Icon24"-->
+<!--                android:contentDescription="@string/altdescr_switch_theme"-->
+<!--                android:src="@drawable/px_sun" />-->
+<!--        </FrameLayout>-->
 
         <FrameLayout
             android:id="@+id/sort_btn"
@@ -33,19 +33,6 @@
                 style="@style/Icon24"
                 android:contentDescription="@string/altdescr_sort"
                 android:src="@drawable/px_sort" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/delete_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/small"
-            android:visibility="gone">
-
-            <ImageView
-                style="@style/Icon24"
-                android:contentDescription="@string/altdescr_delete"
-                android:src="@drawable/px_trash" />
         </FrameLayout>
 
         <View
@@ -80,6 +67,8 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:cacheColorHint="@android:color/transparent"
+            android:divider="@null"
+            android:dividerHeight="0dp"
             android:fadingEdge="none"
             android:overScrollMode="never"
             android:scrollbars="none" />
@@ -117,60 +106,85 @@
             android:overScrollMode="never"
             android:scrollbars="none">
 
-            <LinearLayout style="@style/VerticalList_BG2">
+            <LinearLayout style="@style/VerticalList">
 
-                <TextView
-                    style="@style/Text"
-                    android:text="@string/label_name" />
+                <LinearLayout style="@style/VerticalList_BG2">
 
-                <EditText
-                    android:id="@+id/field_name"
-                    style="@style/EditText"
-                    android:inputType="textNoSuggestions" />
+                    <TextView
+                        style="@style/Text"
+                        android:text="@string/label_name" />
 
-                <View style="@style/SeparatorListVertical" />
+                    <View style="@style/SeparatorListVertical" />
 
-                <TextView
-                    style="@style/Text"
-                    android:text="@string/label_user" />
-
-                <EditText
-                    android:id="@+id/field_user"
-                    style="@style/EditText"
-                    android:inputType="textNoSuggestions" />
+                    <EditText
+                        android:id="@+id/field_name"
+                        style="@style/EditText"
+                        android:inputType="textNoSuggestions" />
+                </LinearLayout>
 
                 <View style="@style/SeparatorListVertical" />
 
-                <TextView
-                    style="@style/Text"
-                    android:text="@string/label_password" />
+                <LinearLayout style="@style/VerticalList_BG2">
 
-                <EditText
-                    android:id="@+id/field_password"
-                    style="@style/EditText"
-                    android:inputType="textVisiblePassword" />
+                    <TextView
+                        style="@style/Text"
+                        android:text="@string/label_user" />
 
-                <View style="@style/SeparatorListVertical" />
+                    <View style="@style/SeparatorListVertical" />
 
-                <TextView
-                    style="@style/Text"
-                    android:text="@string/label_url" />
-
-                <EditText
-                    android:id="@+id/field_url"
-                    style="@style/EditText"
-                    android:inputType="textUri|textNoSuggestions" />
+                    <EditText
+                        android:id="@+id/field_user"
+                        style="@style/EditText"
+                        android:inputType="textNoSuggestions" />
+                </LinearLayout>
 
                 <View style="@style/SeparatorListVertical" />
 
-                <TextView
-                    style="@style/Text"
-                    android:text="@string/label_totp" />
+                <LinearLayout style="@style/VerticalList_BG2">
 
-                <EditText
-                    android:id="@+id/field_totp"
-                    style="@style/EditText"
-                    android:inputType="textVisiblePassword" />
+                    <TextView
+                        style="@style/Text"
+                        android:text="@string/label_password" />
+
+                    <View style="@style/SeparatorListVertical" />
+
+                    <EditText
+                        android:id="@+id/field_password"
+                        style="@style/EditText"
+                        android:inputType="textVisiblePassword" />
+                </LinearLayout>
+
+                <View style="@style/SeparatorListVertical" />
+
+                <LinearLayout style="@style/VerticalList_BG2">
+
+                    <TextView
+                        style="@style/Text"
+                        android:text="@string/label_url" />
+
+                    <View style="@style/SeparatorListVertical" />
+
+                    <EditText
+                        android:id="@+id/field_url"
+                        style="@style/EditText"
+                        android:inputType="textUri|textNoSuggestions" />
+                </LinearLayout>
+
+                <View style="@style/SeparatorListVertical" />
+
+                <LinearLayout style="@style/VerticalList_BG2">
+
+                    <TextView
+                        style="@style/Text"
+                        android:text="@string/label_totp" />
+
+                    <View style="@style/SeparatorListVertical" />
+
+                    <EditText
+                        android:id="@+id/field_totp"
+                        style="@style/EditText"
+                        android:inputType="textVisiblePassword" />
+                </LinearLayout>
             </LinearLayout>
         </ScrollView>
 
@@ -180,6 +194,13 @@
             android:id="@+id/save_btn"
             style="@style/BTN"
             android:text="@string/btn_save" />
+
+        <View style="@style/SeparatorListVertical" />
+
+        <Button
+            android:id="@+id/delete_btn"
+            style="@style/BTN_Danger"
+            android:text="@string/btn_delete" />
 
         <View style="@style/SeparatorListVertical" />
 
