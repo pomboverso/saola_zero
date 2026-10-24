@@ -16,22 +16,22 @@
     <string name="header_theme_dark">Dark Theme</string>
     <string name="header_theme_light">Light Theme</string>
     <string name="header_system">System</string>
+    <string name="header_data">Data</string>
 
     <string name="btn_go_back">GO BACK</string>
     <string name="btn_about">ABOUT</string>
-    <string name="btn_add_message">+ ADD MESSAGE</string>
+    <string name="btn_add_message">+ ADD ENTRY</string>
 
     <string name="label_show_status_bar">Show status bar</string>
     <string name="label_keep_screen_awake">Keep screen awake</string>
     <string name="label_quick_erase">Double tap to clear the message</string>
     <string name="label_app_zoom">App Zoom</string>
-    <string name="label_no_messages">No saved messages yet.</string>
+    <string name="label_no_messages">No saved entries yet.</string>
 
     <string name="label_zoom_unit" translatable="false">%</string>
     <string name="label_collapse_indicator" translatable="false">[-]</string>
     <string name="label_expand_indicator" translatable="false">[+]</string>
 
-    <string name="hint_new_message">New Message</string>
 
     <string name="toast_saved">Saved</string>
 
@@ -51,4 +51,24 @@
     <string name="hid_setting_up">Setting up...</string>
     <string name="altdescr_send_usb">Type this text on the computer over USB</string>
     <string name="toast_sent">Sent</string>
+
+    <string name="btn_save">SAVE</string>
+    <string name="label_name">NAME</string>
+    <string name="label_user">USER</string>
+    <string name="label_password">PASSWORD</string>
+    <string name="label_url">URL</string>
+    <string name="label_totp">TOTP SECRET</string>
+    <string name="toast_nothing_to_save">Nothing to save</string>
+    <string name="toast_invalid_totp">Invalid TOTP secret</string>
+    <string name="toast_confirm_delete">Tap delete again to confirm</string>
+    <string name="toast_unsupported_chars">Contains characters that cannot be typed (US layout only)</string>
+
+    <string name="btn_export">EXPORT</string>
+    <string name="btn_import">IMPORT</string>
+    <string name="label_data_warning">Exports are plain text, anyone with the file can read every password. Keep it safe and delete it when done.</string>
+    <string name="data_exported">Exported %1$d entries</string>
+    <string name="data_exported_to">Exported %1$d entries to %2$s</string>
+    <string name="data_imported">Imported %1$d new entries (%2$d already present)</string>
+    <string name="data_error">Failed: %1$s</string>
+    <string name="data_no_file">No file found at %1$s</string>
 </resources>

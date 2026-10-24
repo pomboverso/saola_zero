@@ -17,10 +17,10 @@
             android:padding="@dimen/small">
 
             <ImageView
+                android:id="@+id/theme_icon"
                 style="@style/Icon24"
-            android:contentDescription="@string/altdescr_switch_theme"
-                android:src="@drawable/px_sun"
-                android:id="@+id/theme_icon" />
+                android:contentDescription="@string/altdescr_switch_theme"
+                android:src="@drawable/px_sun" />
         </FrameLayout>
 
         <FrameLayout
@@ -31,73 +31,21 @@
 
             <ImageView
                 style="@style/Icon24"
-            android:contentDescription="@string/altdescr_sort"
+                android:contentDescription="@string/altdescr_sort"
                 android:src="@drawable/px_sort" />
         </FrameLayout>
 
         <FrameLayout
-            android:id="@+id/list_btn"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/small">
-
-            <ImageView
-                style="@style/Icon24"
-            android:contentDescription="@string/altdescr_show_list"
-                android:src="@drawable/px_bullet_list" />
-        </FrameLayout>
-
-        <FrameLayout
             android:id="@+id/delete_btn"
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/small">
+            android:padding="@dimen/small"
+            android:visibility="gone">
 
             <ImageView
                 style="@style/Icon24"
-            android:contentDescription="@string/altdescr_delete"
+                android:contentDescription="@string/altdescr_delete"
                 android:src="@drawable/px_trash" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/save_btn"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/small">
-
-            <ImageView
-                style="@style/Icon24"
-            android:contentDescription="@string/altdescr_save"
-                android:src="@drawable/px_disk" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/preview_btn"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/small">
-
-            <ImageView
-                style="@style/Icon24"
-            android:contentDescription="@string/altdescr_preview"
-                android:src="@drawable/px_bullhorn" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/send_btn"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/small">
-
-            <ImageView
-                style="@style/Icon24"
-                android:contentDescription="@string/altdescr_send_usb"
-                android:src="@drawable/px_keyboard" />
         </FrameLayout>
 
         <View
@@ -113,7 +61,7 @@
 
             <ImageView
                 style="@style/Icon24"
-            android:contentDescription="@string/altdescr_open_settings"
+                android:contentDescription="@string/altdescr_open_settings"
                 android:src="@drawable/px_cog" />
         </FrameLayout>
 
@@ -150,48 +98,94 @@
             android:text="@string/btn_add_message" />
     </LinearLayout>
 
-    <EditText
+    <LinearLayout
         android:id="@+id/edit_view"
-        android:layout_width="match_parent"
+        style="@style/VerticalList"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@android:color/transparent"
-        android:gravity="center_vertical"
-        android:hint="@string/hint_new_message"
-        android:inputType="textMultiLine"
-        android:padding="16dp"
-        android:textColor="@color/accent"
-        android:textSize="@dimen/h1"
-        android:visibility="gone" />
-
-    <FrameLayout
-        android:id="@+id/preview_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/base"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp"
         android:visibility="gone">
 
-        <TextView
-            android:id="@+id/preview_text"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:padding="16dp"
-            android:textColor="@color/accent" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fadingEdge="none"
+            android:fillViewport="true"
+            android:overScrollMode="never"
+            android:scrollbars="none">
 
-        <FrameLayout
-            android:id="@+id/preview_close_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|right"
-            android:padding="@dimen/small">
+            <LinearLayout style="@style/VerticalList_BG2">
 
-            <ImageView
-                style="@style/Icon24"
-                android:contentDescription="@string/altdescr_close_preview"
-                android:src="@drawable/px_times" />
-        </FrameLayout>
-    </FrameLayout>
+                <TextView
+                    style="@style/Text"
+                    android:text="@string/label_name" />
 
+                <EditText
+                    android:id="@+id/field_name"
+                    style="@style/EditText"
+                    android:inputType="textNoSuggestions" />
+
+                <View style="@style/SeparatorListVertical" />
+
+                <TextView
+                    style="@style/Text"
+                    android:text="@string/label_user" />
+
+                <EditText
+                    android:id="@+id/field_user"
+                    style="@style/EditText"
+                    android:inputType="textNoSuggestions" />
+
+                <View style="@style/SeparatorListVertical" />
+
+                <TextView
+                    style="@style/Text"
+                    android:text="@string/label_password" />
+
+                <EditText
+                    android:id="@+id/field_password"
+                    style="@style/EditText"
+                    android:inputType="textVisiblePassword" />
+
+                <View style="@style/SeparatorListVertical" />
+
+                <TextView
+                    style="@style/Text"
+                    android:text="@string/label_url" />
+
+                <EditText
+                    android:id="@+id/field_url"
+                    style="@style/EditText"
+                    android:inputType="textUri|textNoSuggestions" />
+
+                <View style="@style/SeparatorListVertical" />
+
+                <TextView
+                    style="@style/Text"
+                    android:text="@string/label_totp" />
+
+                <EditText
+                    android:id="@+id/field_totp"
+                    style="@style/EditText"
+                    android:inputType="textVisiblePassword" />
+            </LinearLayout>
+        </ScrollView>
+
+        <View style="@style/Separator" />
+
+        <Button
+            android:id="@+id/save_btn"
+            style="@style/BTN"
+            android:text="@string/btn_save" />
+
+        <View style="@style/SeparatorListVertical" />
+
+        <Button
+            android:id="@+id/cancel"
+            style="@style/BTN"
+            android:text="@string/btn_go_back" />
+    </LinearLayout>
 </LinearLayout>

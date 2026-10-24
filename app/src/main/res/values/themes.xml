@@ -64,6 +64,13 @@
         <item name="android:background">@color/accent</item>
     </style>
 
+    <style name="BTN_Small" parent="BTN">
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:background">@color/surface_1</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textSize">@dimen/small</item>
+    </style>
+
     <style name="Checkbox" parent="BlockFlow" />
 
     <style name="EditText" parent="BlockFlow">
@@ -95,6 +102,11 @@
     <style name="SeparatorListHorizontal">
         <item name="android:layout_width">@dimen/space_between_elements</item>
         <item name="android:layout_height">@dimen/space_between_elements</item>
+    </style>
+
+    <style name="SeparatorListHorizontalSmall">
+        <item name="android:layout_width">@dimen/space_between_elements_small</item>
+        <item name="android:layout_height">@dimen/space_between_elements_small</item>
     </style>
 
     <style name="SeparatorListVertical">

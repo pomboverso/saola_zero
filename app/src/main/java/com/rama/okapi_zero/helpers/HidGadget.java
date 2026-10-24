@@ -77,6 +77,20 @@ public final class HidGadget {
         return runAsRoot(s.toString());
     }
 
+    /** Types the text; if the keyboard function is missing or stale, sets it up and retries once. */
+    public static String typeEnsuringKeyboard(String text) {
+        String result = type(text);
+        if (result.length() > 0) {
+            setup();
+            try {
+                Thread.sleep(2000); // let the computer re-enumerate the phone
+            } catch (InterruptedException ignored) {
+            }
+            result = type(text);
+        }
+        return result;
+    }
+
     private static String runAsRoot(String script) {
         final Process p;
         try {

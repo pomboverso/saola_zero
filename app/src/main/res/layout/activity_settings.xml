@@ -103,6 +103,37 @@
 
             <View style="@style/SeparatorListVertical" />
 
+            <com.rama.okapi_zero.widgets.WdCollapsibleSection
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:defaultExpanded="true"
+                app:header="@string/header_data"
+                app:key="settings:section:data">
+
+                <Button
+                    android:id="@+id/export_btn"
+                    style="@style/BTN"
+                    android:text="@string/btn_export" />
+
+                <View style="@style/SeparatorListVertical" />
+
+                <Button
+                    android:id="@+id/import_btn"
+                    style="@style/BTN"
+                    android:text="@string/btn_import" />
+
+                <View style="@style/SeparatorListVertical" />
+
+                <TextView
+                    android:id="@+id/data_status"
+                    style="@style/Text"
+                    android:text="@string/label_data_warning"
+                    android:textIsSelectable="true"
+                    android:textSize="14sp" />
+            </com.rama.okapi_zero.widgets.WdCollapsibleSection>
+
+            <View style="@style/SeparatorListVertical" />
+
             <LinearLayout
                 android:id="@+id/themes_container"
                 style="@style/VerticalList">

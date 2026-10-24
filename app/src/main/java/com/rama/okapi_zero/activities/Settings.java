@@ -1,16 +1,21 @@
 package com.rama.okapi_zero.activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rama.okapi_zero.R;
+import com.rama.okapi_zero.helpers.DataTransfer;
 import com.rama.okapi_zero.helpers.HidGadget;
 import com.rama.okapi_zero.helpers.SystemBars;
+import com.rama.okapi_zero.managers.EntriesManager;
 import com.rama.okapi_zero.managers.FontManager;
 import com.rama.okapi_zero.managers.PrefsManager;
 import com.rama.okapi_zero.managers.ThemeManager;
@@ -19,11 +24,20 @@ import com.rama.okapi_zero.objects.Themes;
 import com.rama.okapi_zero.widgets.WdCheckbox;
 import com.rama.okapi_zero.widgets.WdRadioGroup;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
+
+import com.rama.okapi_zero.objects.Entry;
 
 public class Settings extends BaseActivity {
     private PrefsManager prefs;
     private View root;
+    private static final int REQ_EXPORT = 101;
+    private static final int REQ_IMPORT = 102;
     private volatile boolean hidBusy;
 
     @Override
@@ -42,6 +56,122 @@ public class Settings extends BaseActivity {
         findViewById(R.id.go_back).setOnClickListener(v -> finish());
 
         findViewById(R.id.hid_setup_btn).setOnClickListener(v -> setupKeyboard());
+        findViewById(R.id.export_btn).setOnClickListener(v -> startExport());
+        findViewById(R.id.import_btn).setOnClickListener(v -> startImport());
+    }
+
+    // ---- Data: export / import (JSON, via the system file picker, no storage permission needed) ----
+
+    private File fallbackFile() {
+        File dir = getExternalFilesDir(null);
+        if (dir == null) dir = getFilesDir();
+        return new File(dir, DataTransfer.FILE_NAME);
+    }
+
+    private void startExport() {
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT)
+                .addCategory(Intent.CATEGORY_OPENABLE)
+                .setType("application/json")
+                .putExtra(Intent.EXTRA_TITLE, DataTransfer.FILE_NAME);
+        try {
+            startActivityForResult(intent, REQ_EXPORT);
+        } catch (ActivityNotFoundException e) {
+            // No file picker installed (e.g. Files app disabled): write to the app's own folder instead.
+            runExport(null);
+        }
+    }
+
+    private void startImport() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT)
+                .addCategory(Intent.CATEGORY_OPENABLE)
+                .setType("*/*");
+        try {
+            startActivityForResult(intent, REQ_IMPORT);
+        } catch (ActivityNotFoundException e) {
+            runImport(null);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK || data == null || data.getData() == null) return;
+        if (requestCode == REQ_EXPORT) runExport(data.getData());
+        if (requestCode == REQ_IMPORT) runImport(data.getData());
+    }
+
+    /** uri == null means: use the app's own folder. */
+    private void runExport(final Uri uri) {
+        new Thread(() -> {
+            String message;
+            EntriesManager db = new EntriesManager(this);
+            try {
+                List<Entry> entries = db.getAll();
+                byte[] bytes = DataTransfer.toJson(entries).getBytes("UTF-8");
+                OutputStream out = null;
+                File file = null;
+                if (uri != null) {
+                    out = getContentResolver().openOutputStream(uri, "wt");
+                } else {
+                    file = fallbackFile();
+                    out = new FileOutputStream(file);
+                }
+                try {
+                    out.write(bytes);
+                } finally {
+                    out.close();
+                }
+                message = file == null ? getString(R.string.data_exported, entries.size())
+                        : getString(R.string.data_exported_to, entries.size(), file.getAbsolutePath());
+            } catch (Exception e) {
+                message = getString(R.string.data_error, String.valueOf(e.getMessage()));
+            } finally {
+                db.close();
+            }
+            showDataStatus(message);
+        }).start();
+    }
+
+    private void runImport(final Uri uri) {
+        new Thread(() -> {
+            String message;
+            EntriesManager db = new EntriesManager(this);
+            try {
+                InputStream in;
+                File file = null;
+                if (uri != null) {
+                    in = getContentResolver().openInputStream(uri);
+                } else {
+                    file = fallbackFile();
+                    if (!file.exists()) {
+                        showDataStatus(getString(R.string.data_no_file, file.getAbsolutePath()));
+                        return;
+                    }
+                    in = new FileInputStream(file);
+                }
+                String json;
+                try {
+                    json = DataTransfer.readAll(in);
+                } finally {
+                    in.close();
+                }
+                List<Entry> entries = DataTransfer.fromJson(json);
+                int added = db.importEntries(entries);
+                message = getString(R.string.data_imported, added, entries.size() - added);
+            } catch (Exception e) {
+                message = getString(R.string.data_error, String.valueOf(e.getMessage()));
+            } finally {
+                db.close();
+            }
+            showDataStatus(message);
+        }).start();
+    }
+
+    private void showDataStatus(final String message) {
+        runOnUiThread(() -> {
+            ((TextView) findViewById(R.id.data_status)).setText(message);
+            Toast.makeText(Settings.this, message, Toast.LENGTH_LONG).show();
+        });
     }
 
     private void setupKeyboard() {

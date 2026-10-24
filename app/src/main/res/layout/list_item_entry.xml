@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/entry_row"
+    style="@style/VerticalList">
+
+    <LinearLayout
+        style="@style/HorizontalList"
+        android:background="@color/surface_0"
+        android:paddingLeft="@dimen/space_between_elements"
+        android:paddingTop="@dimen/space_between_elements"
+        android:paddingRight="@dimen/space_between_elements"
+        android:paddingBottom="@dimen/space_between_elements">
+
+        <FrameLayout
+            android:id="@+id/ascend_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/small">
+
+            <ImageView
+                android:id="@+id/ascend_icon"
+                style="@style/Icon24"
+                android:contentDescription="@string/altdescr_move_up"
+                android:src="@drawable/px_chevron_up"
+                android:tag="accent" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/descend_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/small">
+
+            <ImageView
+                android:id="@+id/descend_icon"
+                style="@style/Icon24"
+                android:contentDescription="@string/altdescr_move_down"
+                android:src="@drawable/px_chevron_down"
+                android:tag="accent" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/row_text"
+            style="@style/Text"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:background="@color/base"
+            android:ellipsize="end"
+            android:padding="@dimen/space_between_elements"
+            android:singleLine="true" />
+
+        <TextView
+            android:id="@+id/row_date"
+            style="@style/Text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/base"
+            android:padding="@dimen/space_between_elements"
+            android:textColor="@color/disabled"
+            android:textSize="@dimen/small" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/row_actions"
+        style="@style/HorizontalList"
+        android:background="@color/surface_0"
+        android:paddingLeft="@dimen/space_between_elements"
+        android:paddingRight="@dimen/space_between_elements"
+        android:paddingBottom="@dimen/space_between_elements">
+
+        <Button
+            android:id="@+id/row_user"
+            style="@style/BTN_Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="U" />
+
+        <View style="@style/SeparatorListHorizontalSmall" />
+
+        <Button
+            android:id="@+id/row_password"
+            style="@style/BTN_Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="P" />
+
+        <View style="@style/SeparatorListHorizontalSmall" />
+
+        <Button
+            android:id="@+id/row_totp"
+            style="@style/BTN_Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="T" />
+
+        <View style="@style/SeparatorListHorizontalSmall" />
+
+        <Button
+            android:id="@+id/row_url"
+            style="@style/BTN_Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="R" />
+
+        <View style="@style/SeparatorListHorizontalSmall" />
+
+        <Button
+            android:id="@+id/row_edit"
+            style="@style/BTN_Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="E" />
+    </LinearLayout>
+</LinearLayout>

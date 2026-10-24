@@ -43,6 +43,12 @@ public final class ThemeManager {
         applyRecursively(root, palette, buildColorMap(context, palette));
     }
 
+    /** Themes a view tree (e.g. a list row) without touching the system bars. */
+    public static void applyToTree(Context context, View root) {
+        Themes.Palette palette = currentPalette(context);
+        applyRecursively(root, palette, buildColorMap(context, palette));
+    }
+
     private static void applyRecursively(View view, Themes.Palette palette, Map<Integer, Integer> map) {
         applyToView(view, palette, map);
         if (view instanceof ViewGroup group) {
