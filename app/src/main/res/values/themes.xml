@@ -91,7 +91,7 @@
         <item name="android:textColor">@color/surface_0</item>
         <item name="android:background">@color/accent</item>
         <item name="android:padding">10dp</item>
-        <item name="android:textSize">@dimen/small</item>
+        <item name="android:textSize">@dimen/text</item>
     </style>
 
     <style name="Checkbox" parent="BlockFlow" />
