@@ -57,7 +57,7 @@ public class Main extends BaseActivity implements EntryAdapter.Listener {
     private TextView emptyLabel;
     private ListView entriesList;
     private TextView fieldGroup;
-    private View archiveBtn;
+//    private View archiveBtn;
     private EditText fieldName;
     private EditText fieldUser;
     private EditText fieldPassword;
@@ -99,7 +99,7 @@ public class Main extends BaseActivity implements EntryAdapter.Listener {
         fieldUrl = findViewById(R.id.field_url);
         fieldTotp = findViewById(R.id.field_totp);
         fieldGroup = findViewById(R.id.field_group);
-        archiveBtn = findViewById(R.id.archive_btn);
+//        archiveBtn = findViewById(R.id.archive_btn);
 
         adapter = new EntryAdapter(this, groups, this);
         entriesList.setAdapter(adapter);
@@ -131,7 +131,7 @@ public class Main extends BaseActivity implements EntryAdapter.Listener {
         fieldGroup.setOnClickListener(v -> showGroupPicker(editGroupId, id -> {
             editGroupId = id;
             fieldGroup.setText(groups.getGroupLabel(id));
-            if (editing != null) archiveBtn.setVisibility(PrefsManager.ARCHIVED_GROUP_ID.equals(id) ? View.GONE : View.VISIBLE);
+//            if (editing != null) archiveBtn.setVisibility(PrefsManager.ARCHIVED_GROUP_ID.equals(id) ? View.GONE : View.VISIBLE);
         }));
         findViewById(R.id.multi_select_cancel_button).setOnClickListener(v -> adapter.exitMultiSelectMode());
         findViewById(R.id.archive_button).setOnClickListener(v -> {
@@ -139,12 +139,12 @@ public class Main extends BaseActivity implements EntryAdapter.Listener {
             moveSelectedToGroup(PrefsManager.ARCHIVED_GROUP_ID);
             Toast.makeText(this, getString(R.string.toast_archived) + (count > 1 ? " (" + count + ")" : ""), Toast.LENGTH_SHORT).show();
         });
-        archiveBtn.setOnClickListener(v -> {
-            // Saves any edits made in the form, and files the entry under Archived.
-            if (save(PrefsManager.ARCHIVED_GROUP_ID)) {
-                Toast.makeText(this, R.string.toast_archived, Toast.LENGTH_SHORT).show();
-            }
-        });
+//        archiveBtn.setOnClickListener(v -> {
+//            // Saves any edits made in the form, and files the entry under Archived.
+//            if (save(PrefsManager.ARCHIVED_GROUP_ID)) {
+//                Toast.makeText(this, R.string.toast_archived, Toast.LENGTH_SHORT).show();
+//            }
+//        });
         findViewById(R.id.move_to_group_button).setOnClickListener(v -> showGroupPicker(null, this::moveSelectedToGroup));
         findViewById(R.id.settings_btn).setOnClickListener(v -> startActivity(new Intent(Main.this, Settings.class)));
         findViewById(R.id.add_btn).setOnClickListener(v -> openEdit(null));
@@ -222,7 +222,7 @@ public class Main extends BaseActivity implements EntryAdapter.Listener {
         fieldTotp.setText(entry == null ? "" : entry.totp);
         editGroupId = entry == null ? PrefsManager.DEFAULT_GROUP_ID : groups.resolveGroupId(entry.groupId);
         fieldGroup.setText(groups.getGroupLabel(editGroupId));
-        archiveBtn.setVisibility(entry == null || PrefsManager.ARCHIVED_GROUP_ID.equals(editGroupId) ? View.GONE : View.VISIBLE);
+//        archiveBtn.setVisibility(entry == null || PrefsManager.ARCHIVED_GROUP_ID.equals(editGroupId) ? View.GONE : View.VISIBLE);
         mode = MODE_EDIT;
         listView.setVisibility(View.GONE);
         editView.setVisibility(View.VISIBLE);

@@ -3,12 +3,12 @@
     android:id="@+id/root"
     style="@style/VerticalList"
     android:layout_height="match_parent"
-    android:background="@color/base">
+    android:background="@color/base"
+    android:padding="16dp">
 
     <LinearLayout
         android:id="@+id/toolbar_row"
-        style="@style/HorizontalList"
-        android:padding="4sp">
+        style="@style/HorizontalList">
 
         <LinearLayout
             android:id="@+id/search_box"
@@ -73,6 +73,8 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
+        <View style="@style/SeparatorListVertical" />
+
         <ListView
             android:id="@+id/messages_list"
             android:layout_width="match_parent"
@@ -96,7 +98,6 @@
         <LinearLayout
             android:id="@+id/menu_bar"
             style="@style/HorizontalList_BG2"
-            android:padding="4sp"
             android:visibility="gone">
 
             <FrameLayout
@@ -144,10 +145,11 @@
             </FrameLayout>
         </LinearLayout>
 
+        <View style="@style/SeparatorListVertical" />
+
         <Button
             android:id="@+id/add_btn"
             style="@style/BTN"
-            android:layout_margin="16dp"
             android:text="@string/btn_add_message" />
     </LinearLayout>
 
@@ -156,9 +158,6 @@
         style="@style/VerticalList"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingBottom="16dp"
         android:visibility="gone">
 
         <ScrollView
@@ -277,17 +276,19 @@
 
         <View style="@style/SeparatorListVertical" />
 
-        <!--        <Button-->
-        <!--            android:id="@+id/delete_btn"-->
-        <!--            style="@style/BTN_Danger"-->
-        <!--            android:text="@string/btn_delete" />-->
-
         <Button
-            android:id="@+id/archive_btn"
+            android:id="@+id/delete_btn"
             style="@style/BTN_Danger"
-            android:text="@string/btn_archive" />
+            android:text="@string/btn_delete" />
 
         <View style="@style/SeparatorListVertical" />
+
+        <!--        <Button-->
+        <!--            android:id="@+id/archive_btn"-->
+        <!--            style="@style/BTN_Danger"-->
+        <!--            android:text="@string/btn_archive" />-->
+
+        <!--        <View style="@style/SeparatorListVertical" />-->
 
         <Button
             android:id="@+id/cancel"
