@@ -28,7 +28,7 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <com.rama.okapi_zero.widgets.WdRadioGroup
+        <com.rama.saola.widgets.WdRadioGroup
             android:id="@+id/groups"
             style="@style/VerticalList_BG2" />
     </ScrollView>

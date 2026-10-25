@@ -29,7 +29,7 @@
 
         <LinearLayout style="@style/VerticalList">
 
-            <com.rama.okapi_zero.widgets.WdCollapsibleSection
+            <com.rama.saola.widgets.WdCollapsibleSection
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:defaultExpanded="true"
@@ -50,14 +50,14 @@
 
                 <View style="@style/SeparatorListVertical" />
 
-                <com.rama.okapi_zero.widgets.WdCheckbox
+                <com.rama.saola.widgets.WdCheckbox
                     android:id="@+id/show_status_bar"
                     style="@style/Checkbox"
                     android:text="@string/label_show_status_bar" />
 
                 <View style="@style/SeparatorListVertical" />
 
-                <com.rama.okapi_zero.widgets.WdCheckbox
+                <com.rama.saola.widgets.WdCheckbox
                     android:id="@+id/keep_screen_awake"
                     style="@style/Checkbox"
                     android:text="@string/label_keep_screen_awake" />
@@ -92,25 +92,25 @@
                             android:text="@string/label_zoom_unit" />
                     </LinearLayout>
                 </LinearLayout>
-            </com.rama.okapi_zero.widgets.WdCollapsibleSection>
+            </com.rama.saola.widgets.WdCollapsibleSection>
 
             <View style="@style/SeparatorListVertical" />
 
-            <com.rama.okapi_zero.widgets.WdCollapsibleSection
+            <com.rama.saola.widgets.WdCollapsibleSection
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:defaultExpanded="true"
                 app:header="@string/header_groups"
                 app:key="settings:section:groups">
 
-                <com.rama.okapi_zero.widgets.WdCheckbox
+                <com.rama.saola.widgets.WdCheckbox
                     android:id="@+id/collapse_groups_on_home"
                     style="@style/Checkbox"
                     android:text="@string/label_collapse_groups" />
 
                 <View style="@style/SeparatorListVertical" />
 
-                <com.rama.okapi_zero.widgets.WdCheckbox
+                <com.rama.saola.widgets.WdCheckbox
                     android:id="@+id/only_one_group_open"
                     style="@style/Checkbox"
                     android:text="@string/label_auto_collapse" />
@@ -128,11 +128,11 @@
                     android:id="@+id/add_group_button"
                     style="@style/BTN"
                     android:text="@string/btn_add_group" />
-            </com.rama.okapi_zero.widgets.WdCollapsibleSection>
+            </com.rama.saola.widgets.WdCollapsibleSection>
 
             <View style="@style/SeparatorListVertical" />
 
-            <com.rama.okapi_zero.widgets.WdCollapsibleSection
+            <com.rama.saola.widgets.WdCollapsibleSection
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:defaultExpanded="true"
@@ -159,7 +159,7 @@
                     android:text="@string/label_data_warning"
                     android:textIsSelectable="true"
                     android:textSize="14sp" />
-            </com.rama.okapi_zero.widgets.WdCollapsibleSection>
+            </com.rama.saola.widgets.WdCollapsibleSection>
 
             <View style="@style/SeparatorListVertical" />
 
@@ -167,17 +167,17 @@
                 android:id="@+id/themes_container"
                 style="@style/VerticalList">
 
-                <com.rama.okapi_zero.widgets.WdCollapsibleSection
+                <com.rama.saola.widgets.WdCollapsibleSection
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:defaultExpanded="true"
                     app:header="@string/header_theme"
                     app:key="settings:section:theme">
 
-                    <com.rama.okapi_zero.widgets.WdRadioGroup
+                    <com.rama.saola.widgets.WdRadioGroup
                         android:id="@+id/theme_group"
                         style="@style/VerticalList_BG2" />
-                </com.rama.okapi_zero.widgets.WdCollapsibleSection>
+                </com.rama.saola.widgets.WdCollapsibleSection>
 
                 <View style="@style/SeparatorListVertical" />
             </LinearLayout>

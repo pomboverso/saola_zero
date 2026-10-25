@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 def current_year = 2026
-def app_name = "okapi"
+def app_name = "saola"
 
 android {
-    namespace "com.rama.${app_name}_zero"
+    namespace "com.rama.${app_name}"
     compileSdk 37
 
     defaultConfig {
-        applicationId "com.rama.${app_name}_forever"
+        applicationId "com.rama.${app_name}"
         targetSdk 37
         versionCode 1
         versionName "${current_year}.${versionCode}"

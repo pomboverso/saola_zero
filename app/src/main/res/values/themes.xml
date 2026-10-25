@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Okapi" parent="@android:style/Theme.Black.NoTitleBar">
+    <style name="Theme.Saola" parent="@android:style/Theme.Black.NoTitleBar">
         <item name="android:windowBackground">@color/base</item>
         <item name="android:textColor">@color/text</item>
     </style>
