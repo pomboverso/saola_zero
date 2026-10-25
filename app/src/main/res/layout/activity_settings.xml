@@ -100,6 +100,42 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:defaultExpanded="true"
+                app:header="@string/header_groups"
+                app:key="settings:section:groups">
+
+                <com.rama.okapi_zero.widgets.WdCheckbox
+                    android:id="@+id/collapse_groups_on_home"
+                    style="@style/Checkbox"
+                    android:text="@string/label_collapse_groups" />
+
+                <View style="@style/SeparatorListVertical" />
+
+                <com.rama.okapi_zero.widgets.WdCheckbox
+                    android:id="@+id/only_one_group_open"
+                    style="@style/Checkbox"
+                    android:text="@string/label_auto_collapse" />
+
+                <View style="@style/Separator" />
+
+                <LinearLayout
+                    android:id="@+id/groups_container"
+                    style="@style/VerticalList_BG2"
+                    android:focusableInTouchMode="true" />
+
+                <View style="@style/SeparatorListVertical" />
+
+                <Button
+                    android:id="@+id/add_group_button"
+                    style="@style/BTN"
+                    android:text="@string/btn_add_group" />
+            </com.rama.okapi_zero.widgets.WdCollapsibleSection>
+
+            <View style="@style/SeparatorListVertical" />
+
+            <com.rama.okapi_zero.widgets.WdCollapsibleSection
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:defaultExpanded="true"
                 app:header="@string/header_data"
                 app:key="settings:section:data">
 

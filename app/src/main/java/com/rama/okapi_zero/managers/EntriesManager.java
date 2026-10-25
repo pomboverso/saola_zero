@@ -9,14 +9,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.rama.okapi_zero.objects.Entry;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class EntriesManager extends SQLiteOpenHelper {
     private static final String TABLE = "entries";
-    private static final String COLUMNS = "id, name, user, password, url, totp, updated_at, sort_order";
+    private static final String COLUMNS = "id, name, user, password, url, totp, updated_at, group_id";
 
     public EntriesManager(Context context) {
-        super(context.getApplicationContext(), "okapi.db", null, 3);
+        super(context.getApplicationContext(), "okapi.db", null, 4);
     }
 
     @Override
@@ -25,7 +26,8 @@ public class EntriesManager extends SQLiteOpenHelper {
     }
 
     private void createEntriesTable(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE entries (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL DEFAULT '', user TEXT NOT NULL DEFAULT '', password TEXT NOT NULL DEFAULT '', url TEXT NOT NULL DEFAULT '', totp TEXT NOT NULL DEFAULT '', updated_at INTEGER NOT NULL, sort_order INTEGER NOT NULL DEFAULT 0)");
+        db.execSQL("CREATE TABLE entries (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL DEFAULT '', user TEXT NOT NULL DEFAULT '', password TEXT NOT NULL DEFAULT '', url TEXT NOT NULL DEFAULT '', totp TEXT NOT NULL DEFAULT '', updated_at INTEGER NOT NULL, sort_order INTEGER NOT NULL DEFAULT 0, group_id TEXT NOT NULL DEFAULT '" + PrefsManager.DEFAULT_GROUP_ID + "')");
+        // sort_order is legacy: manual sorting was removed, the column is kept only because SQLite cannot drop it on old Android.
     }
 
     @Override
@@ -53,15 +55,19 @@ public class EntriesManager extends SQLiteOpenHelper {
             db.execSQL("INSERT INTO entries (name, updated_at, sort_order) SELECT text, updated_at, sort_order FROM messages");
             db.execSQL("DROP TABLE messages");
         }
+        if (oldVersion >= 3 && oldVersion < 4) {
+            // Entries created above for oldVersion < 3 already have the column.
+            db.execSQL("ALTER TABLE entries ADD COLUMN group_id TEXT NOT NULL DEFAULT '" + PrefsManager.DEFAULT_GROUP_ID + "'");
+        }
     }
 
     private Entry read(Cursor c) {
-        return new Entry(c.getLong(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5), c.getLong(6), c.getInt(7));
+        return new Entry(c.getLong(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5), c.getLong(6), c.getString(7));
     }
 
     public List<Entry> getAll() {
         List<Entry> entries = new ArrayList<Entry>();
-        Cursor cursor = getReadableDatabase().rawQuery("SELECT " + COLUMNS + " FROM entries ORDER BY sort_order ASC, updated_at DESC", null);
+        Cursor cursor = getReadableDatabase().rawQuery("SELECT " + COLUMNS + " FROM entries ORDER BY id ASC", null);
         try {
             while (cursor.moveToNext()) {
                 entries.add(read(cursor));
@@ -72,15 +78,6 @@ public class EntriesManager extends SQLiteOpenHelper {
         return entries;
     }
 
-    private Entry getById(long id) {
-        Cursor cursor = getReadableDatabase().rawQuery("SELECT " + COLUMNS + " FROM entries WHERE id = ?", new String[]{String.valueOf(id)});
-        try {
-            return cursor.moveToFirst() ? read(cursor) : null;
-        } finally {
-            cursor.close();
-        }
-    }
-
     private ContentValues valuesOf(Entry e) {
         ContentValues values = new ContentValues();
         values.put("name", e.name);
@@ -89,6 +86,7 @@ public class EntriesManager extends SQLiteOpenHelper {
         values.put("url", e.url);
         values.put("totp", e.totp);
         values.put("updated_at", System.currentTimeMillis());
+        values.put("group_id", e.groupId == null || e.groupId.length() == 0 ? PrefsManager.DEFAULT_GROUP_ID : e.groupId);
         return values;
     }
 
@@ -97,7 +95,6 @@ public class EntriesManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = valuesOf(e);
         if (e.id == 0) {
-            values.put("sort_order", nextSortOrder(db));
             return db.insert(TABLE, null, values);
         }
         db.update(TABLE, values, "id = ?", new String[]{String.valueOf(e.id)});
@@ -122,7 +119,6 @@ public class EntriesManager extends SQLiteOpenHelper {
                 if (exists) continue;
                 ContentValues values = valuesOf(e);
                 if (e.updatedAt > 0) values.put("updated_at", e.updatedAt);
-                values.put("sort_order", nextSortOrder(db));
                 db.insert(TABLE, null, values);
                 added++;
             }
@@ -137,45 +133,26 @@ public class EntriesManager extends SQLiteOpenHelper {
         getWritableDatabase().delete(TABLE, "id = ?", new String[]{String.valueOf(id)});
     }
 
-    public void moveUp(long id) {
-        swapWithNeighbor(id, true);
-    }
-
-    public void moveDown(long id) {
-        swapWithNeighbor(id, false);
-    }
-
-    private int nextSortOrder(SQLiteDatabase db) {
-        Cursor cursor = db.rawQuery("SELECT MAX(sort_order) FROM entries", null);
-        try {
-            return cursor.moveToFirst() && !cursor.isNull(0) ? cursor.getInt(0) + 1 : 0;
-        } finally {
-            cursor.close();
-        }
-    }
-
-    private void setSortOrder(SQLiteDatabase db, long id, int order) {
-        ContentValues values = new ContentValues();
-        values.put("sort_order", order);
-        db.update(TABLE, values, "id = ?", new String[]{String.valueOf(id)});
-    }
-
-    private void swapWithNeighbor(long id, boolean upward) {
+    /** Moves the given entries to a group without touching their modification date. */
+    public void moveToGroup(Collection<Long> ids, String groupId) {
         SQLiteDatabase db = getWritableDatabase();
-        Entry current = getById(id);
-        if (current == null) return;
-        String sql = "SELECT id, sort_order FROM entries WHERE sort_order " + (upward ? "<" : ">") + " ? ORDER BY sort_order " + (upward ? "DESC" : "ASC") + " LIMIT 1";
-        long neighborId;
-        int neighborOrder;
-        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(current.sortOrder)});
+        db.beginTransaction();
         try {
-            if (!cursor.moveToFirst()) return;
-            neighborId = cursor.getLong(0);
-            neighborOrder = cursor.getInt(1);
+            ContentValues values = new ContentValues();
+            values.put("group_id", groupId);
+            for (Long id : ids) {
+                db.update(TABLE, values, "id = ?", new String[]{String.valueOf(id)});
+            }
+            db.setTransactionSuccessful();
         } finally {
-            cursor.close();
+            db.endTransaction();
         }
-        setSortOrder(db, id, neighborOrder);
-        setSortOrder(db, neighborId, current.sortOrder);
+    }
+
+    /** Moves every entry of one group into another (used when a group is deleted). */
+    public void reassignGroup(String fromGroupId, String toGroupId) {
+        ContentValues values = new ContentValues();
+        values.put("group_id", toGroupId);
+        getWritableDatabase().update(TABLE, values, "group_id = ?", new String[]{fromGroupId});
     }
 }

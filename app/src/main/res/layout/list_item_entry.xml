@@ -4,6 +4,7 @@
     style="@style/VerticalList">
 
     <LinearLayout
+        android:id="@+id/row_top"
         style="@style/HorizontalList"
         android:background="@color/surface_0"
         android:paddingLeft="@dimen/space_between_elements"
@@ -11,39 +12,18 @@
         android:paddingRight="@dimen/space_between_elements"
         android:paddingBottom="@dimen/space_between_elements">
 
-        <FrameLayout
-            android:id="@+id/ascend_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/small">
-
-            <ImageView
-                android:id="@+id/ascend_icon"
-                style="@style/Icon24"
-                android:contentDescription="@string/altdescr_move_up"
-                android:src="@drawable/px_chevron_up"
-                android:tag="accent" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/descend_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/small">
-
-            <ImageView
-                android:id="@+id/descend_icon"
-                style="@style/Icon24"
-                android:contentDescription="@string/altdescr_move_down"
-                android:src="@drawable/px_chevron_down"
-                android:tag="accent" />
-        </FrameLayout>
+        <ImageView
+            android:id="@+id/selection_check"
+            style="@style/Icon24"
+            android:layout_marginRight="@dimen/space_between_elements"
+            android:src="@drawable/px_check"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/row_text"
             style="@style/Text"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/base"
             android:textSize="@dimen/h2"

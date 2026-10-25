@@ -1,5 +1,6 @@
 package com.rama.okapi_zero.helpers;
 
+import com.rama.okapi_zero.managers.GroupManager;
 import com.rama.okapi_zero.objects.Entry;
 
 import java.io.ByteArrayOutputStream;
@@ -13,29 +14,30 @@ import java.util.Locale;
 /**
  * Import/export as CSV (RFC 4180), plain text.
  *
- * Export columns: Title, Username, Password, URL, TOTP.
+ * Export columns: Title, Username, Password, URL, TOTP, Group.
  * Import finds columns by header name, so files from KeePassXC (Title, Username, Password, URL, TOTP),
  * Bitwarden (name, login_username, login_password, login_uri, login_totp), Chrome (name, url, username, password),
- * LastPass and 1Password style exports work. Columns that Okapi has no field for (notes, group...) are ignored.
+ * LastPass and 1Password style exports work. A group/folder column is matched to the group with the same name (created if missing). Columns that Okapi has no field for (notes...) are ignored.
  */
 public final class DataTransfer {
     private DataTransfer() {
     }
 
     public static final String FILE_NAME = "okapi_export.csv";
-    private static final String[] HEADER = {"Title", "Username", "Password", "URL", "TOTP"};
+    private static final String[] HEADER = {"Title", "Username", "Password", "URL", "TOTP", "Group"};
 
     private static final List<String> NAME_COLUMNS = Arrays.asList("title", "name");
     private static final List<String> USER_COLUMNS = Arrays.asList("username", "login_username", "user", "login", "user name");
     private static final List<String> PASSWORD_COLUMNS = Arrays.asList("password", "login_password", "pass");
     private static final List<String> URL_COLUMNS = Arrays.asList("url", "login_uri", "website", "web site", "uri");
+    private static final List<String> GROUP_COLUMNS = Arrays.asList("group", "grouping", "folder", "group name", "category");
     private static final List<String> TOTP_COLUMNS = Arrays.asList("totp", "login_totp", "otpauth", "otp", "one-time password");
 
-    public static String toCsv(List<Entry> entries) {
+    public static String toCsv(List<Entry> entries, GroupManager groups) {
         StringBuilder sb = new StringBuilder();
         appendRow(sb, HEADER);
         for (Entry e : entries) {
-            appendRow(sb, new String[]{e.name, e.user, e.password, e.url, e.totp});
+            appendRow(sb, new String[]{e.name, e.user, e.password, e.url, e.totp, groups.getGroupLabel(groups.resolveGroupId(e.groupId))});
         }
         return sb.toString();
     }
@@ -49,7 +51,7 @@ public final class DataTransfer {
     }
 
     /** Throws IllegalArgumentException if the file has no recognizable header. */
-    public static List<Entry> fromCsv(String csv) {
+    public static List<Entry> fromCsv(String csv, GroupManager groups) {
         List<List<String>> rows = parse(csv);
         if (rows.isEmpty()) throw new IllegalArgumentException("The file is empty");
         List<String> header = rows.get(0);
@@ -58,16 +60,22 @@ public final class DataTransfer {
         int password = find(header, PASSWORD_COLUMNS);
         int url = find(header, URL_COLUMNS);
         int totp = find(header, TOTP_COLUMNS);
+        int group = find(header, GROUP_COLUMNS);
         if (name < 0 && user < 0 && password < 0 && url < 0 && totp < 0) {
             throw new IllegalArgumentException("No Title, Username, Password, URL or TOTP column found in the first row");
         }
         List<Entry> entries = new ArrayList<Entry>();
         for (int r = 1; r < rows.size(); r++) {
             List<String> row = rows.get(r);
-            Entry e = new Entry(0, cell(row, name).trim(), cell(row, user).trim(), cell(row, password),
-                    cell(row, url).trim(), cell(row, totp).trim(), 0, 0);
-            if (e.name.length() + e.user.length() + e.password.length() + e.url.length() + e.totp.length() == 0) continue;
-            entries.add(e);
+            String entryName = cell(row, name).trim();
+            String entryUser = cell(row, user).trim();
+            String entryPassword = cell(row, password);
+            String entryUrl = cell(row, url).trim();
+            String entryTotp = cell(row, totp).trim();
+            if (entryName.length() + entryUser.length() + entryPassword.length() + entryUrl.length() + entryTotp.length() == 0) continue;
+            // Only touch groups for rows that are actually kept, so empty rows do not create empty groups.
+            String groupId = groups.findOrCreateByLabel(cell(row, group));
+            entries.add(new Entry(0, entryName, entryUser, entryPassword, entryUrl, entryTotp, 0, groupId));
         }
         return entries;
     }

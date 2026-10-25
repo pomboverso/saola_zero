@@ -11,6 +11,7 @@
         android:padding="4sp">
 
         <LinearLayout
+            android:id="@+id/search_box"
             style="@style/HorizontalList"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -32,6 +33,9 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:background="@color/surface_0"
+                android:hint="@string/hint_search"
+                android:imeOptions="actionSearch"
+                android:inputType="textNoSuggestions"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp" />
 
@@ -39,25 +43,15 @@
                 android:id="@+id/clear_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="8dp">
+                android:padding="8dp"
+                android:visibility="gone">
 
                 <ImageView
                     style="@style/Icon24"
+                    android:contentDescription="@string/altdescr_clear_search"
                     android:src="@drawable/px_times" />
             </FrameLayout>
         </LinearLayout>
-
-        <FrameLayout
-            android:id="@+id/sort_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/small">
-
-            <ImageView
-                style="@style/Icon24"
-                android:contentDescription="@string/altdescr_sort"
-                android:src="@drawable/px_sort" />
-        </FrameLayout>
 
         <FrameLayout
             android:id="@+id/settings_btn"
@@ -98,6 +92,57 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:text="@string/label_no_messages" />
+
+        <LinearLayout
+            android:id="@+id/menu_bar"
+            style="@style/HorizontalList_BG2"
+            android:padding="4sp"
+            android:visibility="gone">
+
+            <FrameLayout
+                android:id="@+id/multi_select_cancel_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12sp">
+
+                <ImageView
+                    style="@style/Icon24"
+                    android:contentDescription="@string/altdescr_cancel_selection"
+                    android:src="@drawable/px_arrow_left" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/selected_count"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/text"
+                android:textSize="18sp" />
+
+            <FrameLayout
+                android:id="@+id/archive_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12sp">
+
+                <ImageView
+                    style="@style/Icon24"
+                    android:contentDescription="@string/altdescr_archive"
+                    android:src="@drawable/px_eye_cross" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/move_to_group_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12sp">
+
+                <ImageView
+                    style="@style/Icon24"
+                    android:contentDescription="@string/altdescr_move_to_group"
+                    android:src="@drawable/px_folder_enter" />
+            </FrameLayout>
+        </LinearLayout>
 
         <Button
             android:id="@+id/add_btn"
@@ -203,6 +248,22 @@
                         android:id="@+id/field_totp"
                         style="@style/EditText"
                         android:inputType="textVisiblePassword" />
+                </LinearLayout>
+
+                <View style="@style/SeparatorListVertical" />
+
+                <LinearLayout style="@style/VerticalList_BG2">
+
+                    <TextView
+                        style="@style/Text"
+                        android:text="@string/label_group" />
+
+                    <View style="@style/SeparatorListVertical" />
+
+                    <TextView
+                        android:id="@+id/field_group"
+                        style="@style/EditText"
+                        android:clickable="true" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
